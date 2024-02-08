@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: conda-env-export
         name: Update Conda environment file
-        entry: bash -c 'conda env export -n texture_env > environment.yml'
+        entry: bash -c 'conda env export -n texture-env > environment.yml'
         language: system
         always_run: true
       - id: env-file-add
@@ -11,4 +11,13 @@ repos:
         entry: git add environment.yml
         language: system
         always_run: true
-        
+      - id: conda-requirements-export
+        name: Update Conda environment file
+        entry: bash -c 'conda list --export -n texture-env > requirements.txt'
+        language: system
+        always_run: true
+      - id: requirements-file-add
+        name: Add Conda environment file
+        entry: git add requirements.txt
+        language: system
+        always_run: true
