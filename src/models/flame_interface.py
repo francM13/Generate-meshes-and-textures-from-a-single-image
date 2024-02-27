@@ -1,9 +1,10 @@
+from typing import Optional
 import requests
 import numpy as np
 import pyrender
 import trimesh
 
-class FlameInterface:
+class flame_interface:
     """Class for interacting with the Flame API.
 
     Attributes:
@@ -48,7 +49,7 @@ class FlameInterface:
                 None (visualization is displayed using pyrender.Viewer).
             """
 
-    def __init__(self, endpoint_url="http://127.0.0.1", port=8081, batch_size=1):
+    def __init__(self, endpoint_url:str="http://127.0.0.1", port:int=8081, batch_size:int=1):
         """Initializes the FlameInterface object.
 
         Args:
@@ -61,7 +62,7 @@ class FlameInterface:
         self.endpoint_url = f"{endpoint_url}:{port}/getFlame"
         self.batch_size = batch_size
 
-    def getFlame(self, shape_params=None, pose_params=None, expression_params=None):
+    def getFlame(self, shape_params:Optional[np.ndarray] = None, pose_params:Optional[np.ndarray] = None, expression_params:Optional[np.ndarray] = None):
         """Sends a GET request to the Flame API and returns the vertices, faces,
         and landmarks data.
 
@@ -122,7 +123,7 @@ class FlameInterface:
         except requests.exceptions.RequestException as e:
             raise ConnectionError(f"Error connecting to Flame API: {e}")
 
-    def Render(self, vertices, faces, landmarks, render_landmarks=True):
+    def Render(self, vertices:np.ndarray, faces:np.ndarray, landmarks:Optional[np.ndarray] = None, render_landmarks:bool=False):
         """Renders the mesh with optional landmark visualization.
 
         Args:
@@ -137,7 +138,7 @@ class FlameInterface:
 
         # Ensure vertices and landmarks are 1D arrays
         vertices = vertices.squeeze()
-        landmarks = landmarks.squeeze()
+       
 
         # Create vertex colors for the mesh
         vertex_colors = np.ones([vertices.shape[0], 4]) * [0.3, 0.3, 0.3, 1]
@@ -154,7 +155,8 @@ class FlameInterface:
         # Add the mesh to the scene
         scene.add(mesh)
 
-        if (render_landmarks):
+        if (render_landmarks): 
+            landmarks = landmarks.squeeze()
             # Create a small sphere for landmark visualization
             sm = trimesh.creation.uv_sphere(radius=0.005)
             sm.visual.vertex_colors = [0.9, 0.1, 0.1, 1.0]

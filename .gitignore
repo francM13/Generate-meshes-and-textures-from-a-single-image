@@ -1,5 +1,4 @@
-/054016.png
-/20044.png
-/face_landmarker_v2_with_blendshapes.task
 /FLAME2023
-/FLAME/__pycache__
+*face_landmarker_v2_with_blendshapes.task
+*__pycache__
+*.png

@@ -2,22 +2,36 @@ import subprocess
 import cv2
 import matplotlib.pyplot as plt
 import os
-from Face_Landmark.Mediapipe import draw_landmarks_on_image
 import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
+from mediapipe.framework.formats import landmark_pb2
+import numpy as np
+import matplotlib.pyplot as plt
+from typing import Union
+from src.data.download_mediapipe_model import download_landmark_model
+from src.visualization.visualize_landmark_on_image import visualize_landmarks_on_image
 
-def generate_face_landmarks(image_input, plot_image=False):
+def generate_face_landmarks(image_input: Union[str, np.ndarray], plot_image: bool = False) -> landmark_pb2.NormalizedLandmarkList:
     """
     Generates face landmarks from an image using MediaPipe FaceLandmarker.
 
     Args:
-        image_input (str or np.ndarray): Path to the image file or the image data itself.
-        plot_image (bool): Whether to display the image or not.
+        image_input (Union[str, np.ndarray]): The input image, either as a file path or a NumPy array.
+        plot_image (bool, optional): Whether to display the image with landmarks (defaults to False).
 
     Returns:
-        The face landmarks or an error occurs.
+        landmark_pb2.NormalizedLandmarkList: The detected face landmarks as a `NormalizedLandmarkList` object.
+
+    Raises:
+        TypeError: If the input types are incorrect.
     """
+
+    # Input validation
+    if not isinstance(image_input, (str, np.ndarray)):
+        raise TypeError("image_input must be a string (file path) or a NumPy array.")
+    if not isinstance(plot_image, bool):
+        raise TypeError("plot_image must be a boolean.")
 
     # Download the landmark model if it's not already available
     download_landmark_model()
@@ -41,7 +55,7 @@ def generate_face_landmarks(image_input, plot_image=False):
     detection_result = detector.detect(image)
 
     # Process the detection result. In this case, visualize it.
-    annotated_image = draw_landmarks_on_image(image.numpy_view(), detection_result)
+    annotated_image = visualize_landmarks_on_image(image.numpy_view(), detection_result)
 
     # Display the annotated image
     if plot_image:
@@ -49,23 +63,3 @@ def generate_face_landmarks(image_input, plot_image=False):
         plt.show()
 
     return detection_result.face_landmarks[0]
-
-def download_landmark_model(
-        landmark_model_url = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
-        landmark_model_file = "face_landmarker_v2_with_blendshapes.task"):
-    """
-    Downloads the landmark model for face landmark detection using OpenCV.
-
-    Args:
-        landmark_model_url (str): URL of the landmark model file.
-        landmark_model_file (str): Local path to save the landmark model file.
-    """
-    if not os.path.isfile("face_landmarker_v2_with_blendshapes.task"):
-        
-
-        try:
-            print("Downloading landmark model...")
-            subprocess.run(["wget", "-O", landmark_model_file, landmark_model_url], check=True)
-            print("Landmark model downloaded successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error downloading landmark model: {e}")
