@@ -14,9 +14,9 @@ def face_landmark_alignment(flame_landmark: o3d.geometry.PointCloud, landmark: o
     Returns:
         o3d.geometry.TriangleMesh: The aligned flame mesh.
     """
-    ## Target Points ([left eye - right eye - nose])
-    flame_target = np.array([36,45,30])
-    landmark_target = np.array([33,263,4])
+    ## Target Points ([left eye - right eye - nose - left mouth corner - right mouth corner])
+    flame_target = np.array([36,45,30,48,54])
+    landmark_target = np.array([33,263,4,78,308])
 
     def Loss_alignment(x):
         """
@@ -51,7 +51,9 @@ def face_landmark_alignment(flame_landmark: o3d.geometry.PointCloud, landmark: o
         # Calculate Loss
         Loss=np.sum([np.linalg.norm(landmark_copy.points[landmark_target[0]]-flame_landmark.points[flame_target[0]]),
                     np.linalg.norm(landmark_copy.points[landmark_target[1]]-flame_landmark.points[flame_target[1]]),
-                    np.linalg.norm(landmark_copy.points[landmark_target[2]]-flame_landmark.points[flame_target[2]])])
+                    np.linalg.norm(landmark_copy.points[landmark_target[2]]-flame_landmark.points[flame_target[2]]),
+                    np.linalg.norm(landmark_copy.points[landmark_target[3]]-flame_landmark.points[flame_target[3]]),
+                    np.linalg.norm(landmark_copy.points[landmark_target[4]]-flame_landmark.points[flame_target[4]])])
         return Loss
     
     # Initial guess
