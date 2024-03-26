@@ -11,7 +11,7 @@ def mesh_loss_function(
     landmark: o3d.geometry.PointCloud,
     visualize: bool = False,
     apply_loss: list[str] = ["landmarks", "mesh"],
-    reduce_landmarks: bool = True,
+    reduce_landmarks: bool = False,
 ) -> dict[str, float]:
     """
     Calculate the loss function for the given mesh and landmarks.
