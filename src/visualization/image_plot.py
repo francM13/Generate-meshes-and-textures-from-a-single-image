@@ -3,33 +3,38 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import os
 
-def image_plot(image_path,verbose=True):
+def image_plot(image, verbose=True):
     """
-    Plots the image with the given path.
+    Plot the image with the given path.
 
     Args:
-        image_path (str): Path to the image file.
+        image (str,array): Path to the image file or array containing an image.
         verbose (bool, optional): If True, print the image dimensions. Defaults to True.
-    """   
+    """  
     
-    if os.path.exists(image_path):
+    # Check if the image path exists
+    if os.path.exists(image):
         try:
             # Open the image with Pillow
-            image = Image.open(image_path)
+            image = Image.open(image)
 
             # Convert image to a format compatible with matplotlib
             image_rgb = image.convert("RGB")
 
             # Display the image inline
             plt.imshow(image_rgb)
-            plt.axis('off')  # Hide unnecessary axis labels and ticks
+            plt.axis('off')
             plt.show()
 
+            # Print image dimensions if verbose is True
             if verbose:
                 image_width, image_height = image.size
                 print(f"Image size: {image_width} x {image_height} pixels")
 
         except FileNotFoundError:
-            print(f"Error: Image file not found: {image_path}")
+            print(f"Error: Image file not found: {image}")
     else:
-        print(f"Image file not found: {image_path}")
+        # Display the image directly if it's not a file
+        plt.imshow(image)
+        plt.axis('off')
+        plt.show()
