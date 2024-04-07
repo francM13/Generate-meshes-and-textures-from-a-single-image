@@ -11,13 +11,13 @@ repos:
         entry: git add environment.yml
         language: system
         always_run: true
-      - id: conda-requirements-export
-        name: Update Conda environment file
-        entry: bash -c 'conda list --export -n texture-env > requirements.txt'
+      - id: requirements-export
+        name: Update requirements file
+        entry: bash -c 'pipreqs --mode no-pin --scan-notebooks --force --ignore [FLAME,FLAME_Apply_HIFI3D_UV]'
         language: system
         always_run: true
       - id: requirements-file-add
-        name: Add Conda environment file
+        name: Add requirements file
         entry: git add requirements.txt
         language: system
         always_run: true
