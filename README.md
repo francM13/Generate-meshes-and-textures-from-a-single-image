@@ -38,7 +38,7 @@ mesh_GA.setRefereneImage(image = "Your_File_Path")
 
 Then run and save the mesh as specified in the notebook.<br>
 Here is an example of the generated Mesh.<br>
-![Mesh Example](reports\figures\Example_Mesh.jpg)
+![Mesh Example](reports/figures/Example_Mesh.jpg)
 
 ### Texture
 
@@ -55,13 +55,13 @@ input_img=expand_dims(input_img, axis=0)
 
 Then serve as input the image to the neural network as shown in the notebook.<br>
 Here is an example of the generated UV texture.<br>
-![Example Mesh](reports\figures\Example_Texture.jpg)
+![Example Mesh](reports/figures/Example_Texture.jpg)
 
 ### Final results
 
 The application of the texture on the mesh is not performed independently, to apply it use an external tool such as [Blender](https://www.blender.org/ "Blender").<br>
 Here is an example of the final result.<br>
-![Example Result](reports\figures\Example_Result.jpg)
+![Example Result](reports/figures/Example_Result.jpg)
 
 ## Disclaimer
 
